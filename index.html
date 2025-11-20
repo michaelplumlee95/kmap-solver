@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karnaugh Map Solver</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Karnaugh Map Solver</h1>
+            <p>Interactive tool to simplify boolean expressions.</p>
+        </header>
+
+        <div class="controls">
+            <label for="variable-count">Number of Variables:</label>
+            <select id="variable-count">
+                <option value="2">2 Variables (A, B)</option>
+                <option value="3">3 Variables (A, B, C)</option>
+                <option value="4">4 Variables (A, B, C, D)</option>
+            </select>
+            <button id="reset-btn">Reset</button>
+        </div>
+
+        <main class="app-layout">
+            <section class="truth-table-section">
+                <h2>Truth Table</h2>
+                <div id="truth-table-container">
+                    <!-- Truth Table generated here -->
+                </div>
+            </section>
+
+            <section class="kmap-section">
+                <h2>Karnaugh Map</h2>
+                <div id="kmap-container" class="kmap-grid">
+                    <!-- K-Map generated here -->
+                </div>
+            </section>
+        </main>
+
+        <section class="output-section">
+            <h2>Simplified Expression</h2>
+            <div id="expression-output" class="expression-box">
+                <!-- Result goes here -->
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

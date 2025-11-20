@@ -1,0 +1,168 @@
+:root {
+    --bg-color: #121212;
+    --surface-color: #1e1e1e;
+    --primary-color: #bb86fc;
+    --secondary-color: #03dac6;
+    --text-color: #e0e0e0;
+    --border-color: #333;
+    --highlight-color: #3700b3;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+select, button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--border-color);
+}
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+section {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Truth Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.output-cell {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.output-cell:hover {
+    background-color: rgba(3, 218, 198, 0.1);
+}
+
+/* K-Map Styles */
+.kmap-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.kmap-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.kmap-table td, .kmap-table th {
+    border: 1px solid var(--border-color);
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    position: relative;
+}
+
+.kmap-cell {
+    cursor: pointer;
+    background-color: var(--surface-color);
+    transition: background-color 0.2s;
+}
+
+.kmap-cell:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.kmap-header {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.kmap-label {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* Output Section */
+.expression-box {
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--primary-color);
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    min-height: 3rem;
+}
