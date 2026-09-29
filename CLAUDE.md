@@ -10,11 +10,13 @@ A static, single-page Karnaugh Map (K-Map) solver for CS231 students. Plain HTML
 
 Open `index.html` directly in a browser (or serve the directory with any static file server). There is no dev server or build process.
 
-To run the standalone algorithm tests:
+To run the test suite (Node built-ins only, exits non-zero on any failure):
 ```
-node test_solver.js
+node tests/run.js        # or: node test_solver.js (delegates to the same runner)
 ```
-Note: `test_solver.js` just `console.log`s expected-vs-actual for each case — it does not assert or exit non-zero on failure. Check the printed output by eye. It also duplicates every solver function from `script.js` verbatim (there's no module system to share code between them), so **if you change the algorithm in `script.js`, port the same change into `test_solver.js`** or the test coverage silently goes stale.
+`tests/harness.js` loads the **real** `script.js` into a `vm` sandbox with a stub DOM (it appends a test-only export line at load time, so `script.js` is not modified), which means there is no duplicated solver to keep in sync. Suites: `solver` (exhaustive 2/3-var + seeded random 4-var, checked against the independent oracles in `tests/oracle.js`), `multioutput` (invariants + adder/decoder/comparator/7-segment fixtures), `state`, `render`, `circuit`. Set `KMAP_SCRIPT=/path/to/copy.js` to run the suite against a modified copy (useful for mutation checks). `tests/E2E_CHECKLIST.md` is the manual browser pass for what a stub DOM can't see.
+
+Known limitation surfaced by the suite: the cover step is essential + greedy (no Petrick's method), so ~0.5% of random 4-var maps come out one term above the true minimum. `solver.test.js` treats that as a ceiling, not a failure.
 
 ## Architecture
 
