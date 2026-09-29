@@ -5,6 +5,8 @@ A web-based interactive tool for simplifying Boolean expressions using Karnaugh 
 ## Features
 
 *   **Variable Support**: Toggle between 2, 3, and 4 variable maps.
+*   **Multiple Outputs**: Add, rename, or remove outputs that all share the same inputs (e.g. `Sum` and `Cout` for a full adder), each with its own Truth Table column, K-Map, and expression.
+*   **Shared-Term Minimization**: Outputs are minimized jointly, not in isolation — if two outputs can validly reuse the same term (the same gate), it's found and reused instead of duplicated, and called out in a "shared terms" legend. The same shared term is colored identically everywhere it appears, across every K-Map and expression line.
 *   **Interactive Solving**: Click on Truth Table outputs or K-Map cells to cycle values (0 → 1 → X → 0).
 *   **Real-time Simplification**: Instantly sees the simplified Boolean expression as you modify the map.
 *   **Visual Feedback**: Groups (Prime Implicants) are highlighted on the map to show how terms are derived.
@@ -20,13 +22,14 @@ Since this is a static web application, you don't need to install any complex de
 
 ### Using the Solver
 1.  **Select Variables**: Use the dropdown menu to choose the number of variables for your problem (e.g., 4 Variables for inputs A, B, C, D).
-2.  **Input Data**:
-    *   **Method A**: Click the "Output" column in the **Truth Table** on the left.
-    *   **Method B**: Click directly on the cells of the **K-Map** grid on the right.
-3.  **Observe**:
-    *   The tool automatically calculates the minimal Boolean expression using the Quine-McCluskey algorithm.
-    *   The resulting expression is displayed at the bottom (e.g., `A'B + CD`).
-    *   **Color Coding**: Notice that parts of the expression match the colored borders on the K-Map groups.
+2.  **Add Outputs**: Use "+ Add Output" to add another output sharing the same inputs (e.g. building a full adder: rename the two outputs to `Sum` and `Cout`). Click an output's name to rename it, or the `×` to remove it.
+3.  **Input Data**:
+    *   **Method A**: Click a cell in that output's column in the **Truth Table**.
+    *   **Method B**: Click directly on the cells of that output's **K-Map** grid.
+4.  **Observe**:
+    *   Each output's minimal Boolean expression is calculated with the Quine-McCluskey algorithm, minimized jointly across all outputs so shared terms are reused rather than duplicated.
+    *   Each output's expression is displayed at the bottom (e.g., `Sum = A'B + CD`).
+    *   **Color Coding**: Parts of each expression match the colored borders on its K-Map groups. A term shared between two or more outputs is colored the same everywhere it appears, and listed in the "shared terms" legend below the expressions.
 
 ## Learning Objectives
 

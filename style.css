@@ -58,6 +58,61 @@ button:hover {
     background-color: var(--border-color);
 }
 
+/* Output Manager */
+.output-manager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.output-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+}
+
+.output-chip input.output-name-input {
+    width: 4.5rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--secondary-color);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.output-chip input.output-name-input:focus {
+    outline: none;
+    text-decoration: underline;
+}
+
+.remove-output-btn {
+    padding: 0 0.4rem;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #888;
+    font-size: 1rem;
+    line-height: 1.4rem;
+}
+
+.remove-output-btn:hover {
+    background-color: rgba(255, 85, 85, 0.15);
+    color: #ff5555;
+}
+
+.remove-output-btn:disabled {
+    visibility: hidden;
+}
+
 .app-layout {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -115,9 +170,24 @@ th {
 /* K-Map Styles */
 .kmap-grid {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    gap: 1.5rem;
     overflow-x: auto;
+}
+
+.kmap-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.kmap-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--secondary-color);
 }
 
 .kmap-table {
@@ -165,4 +235,119 @@ th {
     border-radius: 4px;
     text-align: center;
     min-height: 3rem;
+}
+
+.output-expr-line {
+    margin: 0.4rem 0;
+}
+
+.output-expr-line .output-expr-name {
+    color: var(--secondary-color);
+    margin-right: 0.5rem;
+}
+
+.shared-terms-legend {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+    text-align: center;
+}
+
+.shared-terms-legend:empty {
+    display: none;
+}
+
+.shared-term-entry {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.2rem 0.75rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.shared-term-swatch {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 2px;
+}
+
+/* Circuit Diagram */
+.circuit-section {
+    margin-top: 2rem;
+}
+
+.circuit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.gate-toggle {
+    display: inline-flex;
+}
+
+.gate-toggle button {
+    border-radius: 0;
+}
+
+.gate-toggle button:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.gate-toggle button:last-child {
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+}
+
+.gate-toggle button.active {
+    background-color: var(--highlight-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.circuit-container {
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-align: center;
+}
+
+.circuit-container svg {
+    max-width: none;
+}
+
+.circuit-note {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.circuit-gate {
+    fill: var(--surface-color);
+    stroke: var(--secondary-color);
+    stroke-width: 2;
+}
+
+.circuit-wire {
+    fill: none;
+    stroke: #9aa0a6;
+    stroke-width: 1.5;
+}
+
+.circuit-dot {
+    fill: #9aa0a6;
+}
+
+.circuit-text {
+    fill: var(--text-color);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+}
+
+.circuit-term-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
 }

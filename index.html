@@ -26,6 +26,10 @@
             <button id="reset-btn">Reset</button>
         </div>
 
+        <div class="output-manager" id="output-manager">
+            <!-- Output chips generated here -->
+        </div>
+
         <main class="app-layout">
             <section class="truth-table-section">
                 <h2>Truth Table</h2>
@@ -37,15 +41,31 @@
             <section class="kmap-section">
                 <h2>Karnaugh Map</h2>
                 <div id="kmap-container" class="kmap-grid">
-                    <!-- K-Map generated here -->
+                    <!-- One .kmap-card per output generated here -->
                 </div>
             </section>
         </main>
 
         <section class="output-section">
-            <h2>Simplified Expression</h2>
+            <h2>Simplified Expressions</h2>
             <div id="expression-output" class="expression-box">
-                <!-- Result goes here -->
+                <!-- One line per output generated here -->
+            </div>
+            <div id="shared-terms-legend" class="shared-terms-legend">
+                <!-- Shared-term legend generated here -->
+            </div>
+        </section>
+
+        <section class="circuit-section">
+            <div class="circuit-header">
+                <h2>Circuit Diagram</h2>
+                <div class="gate-toggle" id="gate-toggle" role="group" aria-label="Gate style">
+                    <button type="button" data-style="and-or" class="active">AND-OR</button>
+                    <button type="button" data-style="nand-nand">NAND-NAND</button>
+                </div>
+            </div>
+            <div id="circuit-container" class="circuit-container">
+                <!-- SVG circuit generated here -->
             </div>
         </section>
     </div>
