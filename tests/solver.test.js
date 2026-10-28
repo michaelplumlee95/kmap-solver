@@ -99,6 +99,30 @@ test('one 1, rest X -> constant-1 term (X expands freely)', () => {
     const v = new Array(16).fill(2); v[5] = 1;
     assert.deepEqual(solve1(v, 4), ['----']);
 });
+[[5, 400, 555], [6, 60, 666]].forEach(([n, iters, seed]) => {
+    test(`random ${n}-var (seed ${seed}): ${iters} maps covered, safe, prime`, () => {
+        const rnd = mulberry32(seed);
+        for (let i = 0; i < iters; i++) {
+            const p1 = rnd(), pX = rnd() * 0.4;
+            const values = Array.from({ length: 1 << n }, () => { const r = rnd(); return r < pX ? 2 : (r < pX + (1 - pX) * p1 ? 1 : 0); });
+            checkInvariants(values, n, solve1(values, n), `${n}var seed${seed} #${i} ${values.join('')}`);
+        }
+    });
+});
+
+test('5-var: E=0 and E=1 maps are adjacent (minterms 0,1 -> A\'B\'C\'D\')', () => {
+    const v = new Array(32).fill(0); v[0] = 1; v[1] = 1;
+    assert.deepEqual(solve1(v, 5).map(api.formatTermString), ["A'B'C'D'"]);
+});
+
+test('6-var: formatTermString and 8x8 Gray wrap (corners 0,7,56,63 -> B\'... check)', () => {
+    api.setNumVars(6);
+    assert.equal(api.formatTermString('010110'), "A'BC'DEF'");
+    const v = new Array(64).fill(0);
+    [0, 4, 32, 36].forEach(m => v[m] = 1); // A,D vary; B,C,E,F=0 -> wraps rows 000/100 and cols 000/100
+    assert.deepEqual(solve1(v, 6).map(api.formatTermString), ["B'C'E'F'"]);
+});
+
 test('4-var corners 0,2,8,10 -> B\'D\'', () => {
     const v = new Array(16).fill(0); [0, 2, 8, 10].forEach(m => v[m] = 1);
     assert.deepEqual(solve1(v, 4).map(api.formatTermString), ["B'D'"]);

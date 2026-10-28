@@ -47,6 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             outputs.forEach(o => { o.values = new Array(size).fill(0); });
         }
+        // An output named after an input (e.g. F at 6 vars) would be ambiguous in the expressions.
+        outputs.forEach(o => {
+            if (varNames().includes(o.name)) o.name = nextOutputName();
+        });
     }
 
     function addOutput() {
@@ -56,9 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function nextOutputName() {
-        // Skip A-D (input variable names), and I/O/X (easily confused with 1/0/don't-care)
+        // Skip input variable names, and I/O/X (easily confused with 1/0/don't-care)
         const letters = ['F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
-        const used = new Set(outputs.map(o => o.name));
+        const used = new Set(outputs.map(o => o.name).concat(varNames()));
         const free = letters.find(l => !used.has(l));
         return free || ('OUT' + (outputs.length + 1));
     }
@@ -97,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function varNames() {
-        return numVars === 2 ? ['A', 'B'] : numVars === 3 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D'];
+        return 'ABCDEF'.slice(0, numVars).split('');
     }
 
     function escapeHtml(str) {
@@ -158,47 +162,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // n-bit reflected Gray code as an array of bit strings ('0', '1', '00', '01', '11', '10', ...).
+    function grayCode(n) {
+        if (n === 0) return [''];
+        const prev = grayCode(n - 1);
+        return prev.map(g => '0' + g).concat(prev.slice().reverse().map(g => '1' + g));
+    }
+
     function renderKMap() {
-        // Gray code sequences
-        const gray2 = ['00', '01', '11', '10'];
-        const gray1 = ['0', '1'];
-
-        let rows, cols, rowVars, colVars, rowGray, colGray;
-
-        if (numVars === 2) {
-            rows = 2; cols = 2;
-            rowVars = 'A'; colVars = 'B';
-            rowGray = gray1; colGray = gray1;
-        } else if (numVars === 3) {
-            rows = 2; cols = 4;
-            rowVars = 'A'; colVars = 'BC';
-            rowGray = gray1; colGray = gray2;
-        } else { // 4
-            rows = 4; cols = 4;
-            rowVars = 'AB'; colVars = 'CD';
-            rowGray = gray2; colGray = gray2;
-        }
+        const names = varNames();
+        // Bits per axis; 5-var uses a second map for E (adjacent cells mirror across the two).
+        const layout = {
+            2: { rowBits: 1, colBits: 1, subBits: 0 },
+            3: { rowBits: 1, colBits: 2, subBits: 0 },
+            4: { rowBits: 2, colBits: 2, subBits: 0 },
+            5: { rowBits: 2, colBits: 2, subBits: 1 },
+            6: { rowBits: 3, colBits: 3, subBits: 0 }
+        }[numVars];
+        const rowGray = grayCode(layout.rowBits);
+        const colGray = grayCode(layout.colBits);
+        const subGray = grayCode(layout.subBits);
+        const rowVars = names.slice(0, layout.rowBits).join('');
+        const colVars = names.slice(layout.rowBits, layout.rowBits + layout.colBits).join('');
+        const subVar = names.slice(layout.rowBits + layout.colBits).join('');
 
         let html = '';
         outputs.forEach(o => {
             html += `<div class="kmap-card" data-output-id="${o.id}">`;
             html += `<div class="kmap-card-title">${escapeHtml(o.name) || '?'}</div>`;
-            html += `<table class="kmap-table">`;
-            html += `<tr><th class="kmap-label">${rowVars}\\${colVars}</th>`;
-            colGray.forEach(g => html += `<th class="kmap-header">${g}</th>`);
-            html += '</tr>';
-
-            for (let r = 0; r < rows; r++) {
-                html += `<tr><th class="kmap-header">${rowGray[r]}</th>`;
-                for (let c = 0; c < cols; c++) {
-                    const bin = rowGray[r] + colGray[c];
-                    const index = parseInt(bin, 2);
-                    const val = o.values[index] === 2 ? 'X' : o.values[index];
-                    html += `<td class="kmap-cell" data-output-id="${o.id}" data-index="${index}">${val}</td>`;
-                }
+            html += `<div class="kmap-tables">`;
+            subGray.forEach(sub => {
+                html += `<div class="kmap-sub">`;
+                if (subVar) html += `<div class="kmap-sub-title">${subVar} = ${sub}</div>`;
+                html += `<table class="kmap-table${numVars === 6 ? ' kmap-table-dense' : ''}">`;
+                html += `<tr><th class="kmap-label">${rowVars}\\${colVars}</th>`;
+                colGray.forEach(g => html += `<th class="kmap-header">${g}</th>`);
                 html += '</tr>';
-            }
-            html += '</table></div>';
+
+                rowGray.forEach(rg => {
+                    html += `<tr><th class="kmap-header">${rg}</th>`;
+                    colGray.forEach(cg => {
+                        const index = parseInt(rg + cg + sub, 2);
+                        const val = o.values[index] === 2 ? 'X' : o.values[index];
+                        html += `<td class="kmap-cell" data-output-id="${o.id}" data-index="${index}">${val}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                html += '</table></div>';
+            });
+            html += '</div>';
+            if (numVars === 5) html += `<div class="kmap-note">Cells in the same position on the two maps are adjacent.</div>`;
+            html += '</div>';
         });
         kmapContainer.innerHTML = html;
 

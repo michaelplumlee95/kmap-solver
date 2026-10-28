@@ -190,6 +190,31 @@ th {
     color: var(--secondary-color);
 }
 
+.kmap-tables {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.kmap-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.kmap-sub-title, .kmap-note {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.kmap-table-dense td, .kmap-table-dense th {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+}
+
 .kmap-table {
     border-collapse: collapse;
     margin: 0 auto;
